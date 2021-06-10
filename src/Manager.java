@@ -3,6 +3,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
+//todo truck and updates remain
 public class Manager {
 
     ArrayList<DomesticAnimal> domestics = new ArrayList<DomesticAnimal>();
@@ -138,7 +139,7 @@ public class Manager {
                         store.wildAnimalCap.put(w.getName(), c + 1);
                         wilds.remove(i);
                     } else {
-                        System.out.println(ConsoleColors.RED + "there isn't enough space to store animal!"+ConsoleColors.RESET);
+                        System.out.println(ConsoleColors.RED + "there isn't enough space to store animal!" + ConsoleColors.RESET);
                         w.setHealth(w.getHealth() + 1);
                     }
                 } else if (w.getHealth() == 0)
@@ -146,7 +147,7 @@ public class Manager {
                 return;
             }
         }
-        System.out.println(ConsoleColors.RED+"there is not any animal here!"+ConsoleColors.RESET);
+        System.out.println(ConsoleColors.RED + "there is not any animal here!" + ConsoleColors.RESET);
     }
 
     public void work(String factoryName) {
@@ -470,47 +471,12 @@ public class Manager {
     }
 
     public void truckLoad(String name, int amount) {
-        for (int i = 0; i < products.size(); i++) {
-            if (products.get(i).getName().equals(name)) {
-                if (products.get(i).getVolume() < amount) {
-                    System.out.println(ConsoleColors.RED + "there is not enough this product in the store!!" + ConsoleColors.RESET);
-                } else {
-                    for (int j = 0; j < truck.getProductInTruck().size(); j++) {
-                        if (truck.getProductInTruck().containsKey(name)) {
-                            if (truck.getTruckCapacity() >= amount) {
-//                                truck.getProductInTruck().replace(name,amount);
-//                                int x= truck.getProductInTruck().get(name);
-                                truck.getProductInTruck().remove(name);
-                                truck.getProductInTruck().put(name, amount);
-
-                                truck.setTruckCapacity(truck.getTruckCapacity() - amount);
-                                products.get(i).setVolume(products.get(i).getVolume() - amount);
-                                store.setCapacity(store.getCapacity() - amount);
-                                System.out.println("done!!!");
-                            } else {
-                                System.out.println(ConsoleColors.RED + "there is not enough space in truck !!!" + ConsoleColors.RESET);
-                            }
-                        } else {
-                            truck.getProductInTruck().put(name, amount);
-                            if (truck.getTruckCapacity() >= amount) {
-                                truck.setTruckCapacity(truck.getTruckCapacity() - amount);
-                                products.get(i).setVolume(products.get(i).getVolume() - amount);
-                                store.setCapacity(store.getCapacity() - amount);
-                                System.out.println("done!!!");
-                            } else {
-                                System.out.println(ConsoleColors.RED + "there is not enough space in truck !!!" + ConsoleColors.RESET);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        System.out.println(ConsoleColors.RED + "there is not product with this name!!" + ConsoleColors.RESET);
+        //todo bayad az store bardare na products   //////:
     }
 
     public void truckUnload(String name, int amount) {
         boolean haveProduct = false;
-        Map<String, Integer> map = new TreeMap<String, Integer>();
+        Map<String, Integer> map ;
         map = truck.getProductInTruck();
         for (int i = 0; i < truck.getProductInTruck().size(); i++) {
             if (truck.getProductInTruck().get(name) < amount) {
@@ -531,9 +497,8 @@ public class Manager {
                     store.setCapacity(store.getCapacity() + amount);
                 }
             }
-        } else {
+        } else
             System.out.println("there is not products with this name!!!");
-        }
     }
 
     public void truckGo() {

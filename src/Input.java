@@ -14,7 +14,7 @@ public class Input {
     String nowUserName = "";
     FileWriter fileWriter;
     FileReader fileReader;
-    File file=new File("property");
+    File file = new File("property");
     Gson gson = new GsonBuilder().create();
     JsonParser parser = new JsonParser();
 
@@ -90,14 +90,13 @@ public class Input {
                 cage(order.split("\\s"));
             } else if (Pattern.compile("[tT][uU][rR][Nn] \\d+").matcher(order).find()) {
                 turn(order.split("\\s"));
-            } else if (Pattern.compile("[tT][rR][uU][Kk] [lL][oO][aA][Dd] \\w+").matcher(order).find()) {
-
+            } else if (Pattern.compile("[tT][rR][uU][cC][Kk] [lL][oO][aA][Dd] \\w+").matcher(order).find()) {
+                truckLoad(order.split("\\s"));
             } else if (Pattern.compile("[tT][rR][uU][cC][kK] [uU][nN][lL][oO][aA][dD] \\w+").matcher(order).find()) {
                 truckUnload(order.split("\\s"));
             } else if (Pattern.compile("[tT][rR][uU][cC][kK] [Gg][Oo]").matcher(order).find()) {
                 truckGo();
-            }
-            else if (Pattern.compile("[iI][nN][qQ][uU][iI][rR][Yy]").matcher(order).find()){
+            } else if (Pattern.compile("[iI][nN][qQ][uU][iI][rR][Yy]").matcher(order).find()) {
                 manager.show();
             } else {
                 System.out.println(ConsoleColors.RED + "wrong command!" + ConsoleColors.RESET);
@@ -106,11 +105,11 @@ public class Input {
         }
     }
 
-    private void truckUnload(String[] input){
-        String name=input[2];
-        int am=0;
+    private void truckUnload(String[] input) {
+        String name = input[2];
+        int am = 0;
         System.out.println("enter your amount");
-        manager.truckUnload(name,am);
+        manager.truckUnload(name, am);
     }
 
     public void menu() {
@@ -129,7 +128,7 @@ public class Input {
     }
 
     public void signup() {
-        String pass ;
+        String pass;
         System.out.print("enter username : ");
         String name = scanner.nextLine();
         try {
@@ -154,7 +153,7 @@ public class Input {
             try {
                 fileWriter = new FileWriter("property", true);
                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                if (file.length()!=0)
+                if (file.length() != 0)
                     bufferedWriter.newLine();
 
                 User user = new User(name, pass);
@@ -228,8 +227,8 @@ public class Input {
     }
 
     public void startMenu() {
-        String level ;
-        String choose ;
+        String level;
+        String choose;
         System.out.println(ConsoleColors.GREEN + "Enter your order :)" + ConsoleColors.RESET);
         System.out.println("1-Start 2-Logout 3-Setting");
         choose = scanner.nextLine();
@@ -240,11 +239,9 @@ public class Input {
                 System.out.println(ConsoleColors.RED + "your input must be number :|" + ConsoleColors.RESET);
                 level = scanner.nextLine();
             }
-            if (isNumberic(level))
-            {
+            if (isNumberic(level)) {
                 run();
-            }
-            else if (level.equals("back")) {
+            } else if (level.equals("back")) {
                 startMenu();
             }
         } else if (choose.equals("2")) {
@@ -262,14 +259,19 @@ public class Input {
     }
 
     private void truckLoad(String[] input) {
-        int amount = 0;
-        System.out.println(ConsoleColors.PURPLE + "Enter your amount !!!");
+        int amount;
+        System.out.println(ConsoleColors.PURPLE + "Enter your amount : " + ConsoleColors.RESET);
         amount = scanner.nextInt();
         String name = input[2];
+        if (amount < 0) {
+            System.out.println(ConsoleColors.RED + "must be  positive !" + ConsoleColors.RESET);
+            truckLoad(input);
+            return;
+        }
         manager.truckLoad(name, amount);
     }
 
-    private void truckGo(){
+    private void truckGo() {
         manager.truckGo();
     }
 
