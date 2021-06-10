@@ -57,6 +57,16 @@ public abstract class WildAnimal {
         return prisonTime;
     }
 
+    public String getName(){
+        if (this.getClass()==Bear.class)
+            return "Bear";
+        if (this.getClass()==Tiger.class)
+            return "Tiger";
+        if (this.getClass()==Lion.class)
+            return "Lion";
+        return "";
+    }
+
     abstract public void print();
 
 

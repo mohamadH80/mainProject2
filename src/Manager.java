@@ -3,8 +3,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
-//todo changes barkhord wilds,get remaining,inquiry,produce func,well set remain,fill well,well func,set time in well,work factory edit
-//todo
 public class Manager {
 
     ArrayList<DomesticAnimal> domestics = new ArrayList<DomesticAnimal>();
@@ -136,16 +134,19 @@ public class Manager {
                 wilds.get(i).setHealth(w.getHealth() - 1);
                 if (w.getHealth() == -1) {
                     if (store.getRemaining() >= wilds.get(i).getCapacity()) {
+                        int c = store.wildAnimalCap.get(w.getName());
+                        store.wildAnimalCap.put(w.getName(), c + 1);
                         wilds.remove(i);
-                        //todo  ez add to store
-                    } else
-                        System.out.println(ConsoleColors.RED + "there isn't enough space to store animal!");
+                    } else {
+                        System.out.println(ConsoleColors.RED + "there isn't enough space to store animal!"+ConsoleColors.RESET);
+                        w.setHealth(w.getHealth() + 1);
+                    }
                 } else if (w.getHealth() == 0)
                     wilds.get(i).setPrisonTime(time);
-
-
+                return;
             }
         }
+        System.out.println(ConsoleColors.RED+"there is not any animal here!"+ConsoleColors.RESET);
     }
 
     public void work(String factoryName) {
@@ -174,6 +175,7 @@ public class Manager {
     }
 
     public void turn(int n) {
+        wilds.add(new Bear());
 
         for (int i = 0; i < n; i++) {
             time++;

@@ -21,6 +21,11 @@ public class Store {
         allProductsCap.put("bread", 0);
         allProductsCap.put("shirt", 0);
         allProductsCap.put("iceCream", 0);
+
+        wildAnimalCap.put("Bear",0);
+        wildAnimalCap.put("Lion",0);
+        wildAnimalCap.put("Tiger",0);
+
         capacity = 30;
 
     }
