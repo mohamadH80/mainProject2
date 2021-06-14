@@ -6,8 +6,9 @@ import com.google.gson.JsonParser;
 import java.io.*;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-
-public class Input {
+//jkvgv
+public class Input
+{
 
     static Manager manager = new Manager();
     static Scanner scanner = new Scanner(System.in);
