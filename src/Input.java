@@ -6,9 +6,8 @@ import com.google.gson.JsonParser;
 import java.io.*;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-//jkvgvdsfsdflmklkm
-public class Input
-{
+
+public class Input {
 
     static Manager manager = new Manager();
     static Scanner scanner = new Scanner(System.in);
@@ -69,11 +68,11 @@ public class Input
             manager.turn(n);
     }
 
-    public void run() {
+    public void run(int level) {
         String order;
         boolean finish = false;
         System.out.println(ConsoleColors.YELLOW + "GAME START!" + ConsoleColors.RESET);
-
+        checkStart(level);
         while (!finish) {
             System.out.print("enter command : ");
             order = scanner.nextLine();
@@ -102,8 +101,115 @@ public class Input
             } else {
                 System.out.println(ConsoleColors.RED + "wrong command!" + ConsoleColors.RESET);
             }
-
+            finish = checkEnd(level);
         }
+
+        System.out.println("congratulation!\tyou win level " + level+"");
+        menu();
+    }
+
+    private boolean checkEnd(int level) {
+        switch (level) {
+            case 1:
+                return e1();
+            case 2:
+                return e2();
+            case 3:
+                return e3();
+            case 4:
+                return e4();
+            case 5:
+                return e5();
+        }
+        return true;
+    }
+
+    private boolean e1() {
+        return manager.store.allProductsCap.get("egg") == 6;
+    }
+
+    private boolean e2() {
+        int hens = 0;
+        for (DomesticAnimal d : manager.domestics) {
+            if (d.getName().equalsIgnoreCase("hen"))
+                hens++;
+        }
+        return manager.store.allProductsCap.get("egg") == 2 && hens == 2;
+    }
+
+    private boolean e3() {
+        return manager.store.allProductsCap.get("flour") == 2 && manager.getCoins() == 300;
+    }
+
+    private boolean e4() {
+        int hens = 0;
+        for (DomesticAnimal d : manager.domestics) {
+            if (d.getName().equalsIgnoreCase("hen"))
+                hens++;
+        }
+        return manager.store.allProductsCap.get("flour") == 6 &&
+                manager.getCoins() == 500 &&
+                hens == 5;
+
+    }
+
+    private boolean e5() {
+        return manager.store.allProductsCap.get("egg") == 9 &&
+                manager.store.allProductsCap.get("flour") == 5 &&
+                manager.store.allProductsCap.get("bread") == 1;
+    }
+
+
+    private void checkStart(int level) {
+        switch (level) {
+            case 1:
+                s1();
+                break;
+            case 2:
+                s2();
+                break;
+            case 3:
+                s3();
+                break;
+            case 4:
+                s4();
+                break;
+            case 5:
+                s5();
+                break;
+        }
+    }
+
+    private void s1() {
+        manager.setCoins(500);
+        manager.domestics.add(new Hen());
+    }
+
+    private void s2() {
+        manager.setCoins(90);
+        manager.wilds.add(new Bear());
+        manager.wilds.add(new Bear());
+    }
+
+    private void s3() {
+        manager.setCoins(100);
+        manager.wilds.add(new Bear());
+//        manager.wilds.add(new Bear());
+    }
+
+    private void s4() {
+        manager.setCoins(400);
+        manager.dogs.add(new Dog());
+        manager.factories.add(new Mill());
+    }
+
+    private void s5() {
+        manager.setCoins(0);
+        manager.domestics.add(new Hen());
+        manager.domestics.add(new Hen());
+        manager.domestics.add(new Hen());
+        manager.domestics.add(new Hen());
+        manager.factories.add(new Mill());
     }
 
     private void truckUnload(String[] input) {
@@ -205,7 +311,7 @@ public class Input
                                 return;
                             }
                         }
-                        run();
+                        startMenu();
                         return;
                     }
                 }
@@ -241,7 +347,7 @@ public class Input
                 level = scanner.nextLine();
             }
             if (isNumberic(level)) {
-                run();
+                run(Integer.parseInt(level));
             } else if (level.equals("back")) {
                 startMenu();
             }
@@ -277,6 +383,3 @@ public class Input
     }
 
 }
-
-
-

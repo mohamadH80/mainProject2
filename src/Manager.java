@@ -476,7 +476,7 @@ public class Manager {
 
     public void truckUnload(String name, int amount) {
         boolean haveProduct = false;
-        Map<String, Integer> map ;
+        Map<String, Integer> map;
         map = truck.getProductInTruck();
         for (int i = 0; i < truck.getProductInTruck().size(); i++) {
             if (truck.getProductInTruck().get(name) < amount) {
@@ -508,5 +508,6 @@ public class Manager {
             truck.getProductInTruck().clear();
         }
     }
+
 
 }
