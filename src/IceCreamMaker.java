@@ -2,7 +2,7 @@ public class IceCreamMaker extends Factory{
 
 
     public IceCreamMaker() {
-        super("pocketMilk", "iceCream",550);
+        super("pocketMilk", "iceCream",550,7);
     }
 
     @Override
@@ -10,8 +10,4 @@ public class IceCreamMaker extends Factory{
         return "IceCreamMaker";
     }
 
-    @Override
-    public int getTimeToProduce() {
-        return 7;
-    }
 }

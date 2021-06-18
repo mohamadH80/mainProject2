@@ -5,13 +5,25 @@ public abstract class Factory {
     protected int factoryLevel;
     protected int time;
     protected int price;
+    private int updateCoins;
+    private int time_need_produce;
 
-    public Factory(String inProduct, String outProduct, int price) {
+    public Factory(String inProduct, String outProduct, int price, int time) {
         this.inProduct = inProduct;
         this.outProduct = outProduct;
         time = -1;
         factoryLevel = 1;
         this.price = price;
+        updateCoins = price * 2 / 3;
+        time_need_produce = time;
+    }
+
+    public int getTime_need_produce() {
+        return time_need_produce;
+    }
+
+    public int getUpdateCoins() {
+        return updateCoins;
     }
 
     public int getTime() {
@@ -24,14 +36,20 @@ public abstract class Factory {
 
     abstract public String getName();
 
-    abstract public int getTimeToProduce();
+//    abstract public int getTimeToProduce();
+
+    public void update() {
+        time_need_produce /= 2;
+        factoryLevel++;
+        Input.manager.setCoins(Input.manager.getCoins() - updateCoins);
+    }
 
     @Override
     public String toString() {
         return "Factory{" +
                 "name=" + getName() +
-                "factoryLevel=" + factoryLevel +
-                ", time=" + time +
+                ", factoryLevel=" + factoryLevel +
                 '}';
     }
+
 }

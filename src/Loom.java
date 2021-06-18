@@ -1,7 +1,7 @@
 public class Loom extends Factory {
 
     public Loom() {
-        super("feather", "cloth",250);
+        super("feather", "cloth",250,5);
     }
 
     @Override
@@ -9,10 +9,6 @@ public class Loom extends Factory {
         return "Loom";
     }
 
-    @Override
-    public int getTimeToProduce() {
-        return 5;
-    }
     //parche baf
 
 }

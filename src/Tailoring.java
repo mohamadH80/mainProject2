@@ -1,7 +1,7 @@
 public class Tailoring extends Factory {
 
     public Tailoring() {
-        super("cloth", "shirt",400);
+        super("cloth", "shirt",400,6);
     }
 
     @Override
@@ -9,9 +9,5 @@ public class Tailoring extends Factory {
         return "Tailoring";
     }
 
-    @Override
-    public int getTimeToProduce() {
-        return 6;
-    }
     //khayati
 }

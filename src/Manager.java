@@ -182,7 +182,7 @@ public class Manager {
 
     public void work(String factoryName) {
         for (Factory factory : factories) {
-            if (factory.getName().equals(factoryName)) {
+            if (factory.getName().equalsIgnoreCase(factoryName)) {
                 if (factory.getTime() == -1) {
                     if (store.allProductsCap.get(factory.inProduct) > 0) {
                         factory.setTime(time);
@@ -190,7 +190,7 @@ public class Manager {
                         store.allProductsCap.put(factory.inProduct, c - 1);
                         return;
                     } else {
-                        System.out.println(ConsoleColors.RED + factoryName + " need " + factory.inProduct);
+                        System.out.println(ConsoleColors.RED + factoryName + " need " + factory.inProduct + ConsoleColors.RESET);
                         return;
                     }
                 } else {
@@ -199,45 +199,20 @@ public class Manager {
                 }
             }
         }
-        System.out.println("This factory isnt build do you want to build!?");
-        System.out.println("1 : yes  ,  2 : no");
-        String choise = Input.scanner.nextLine();
-        if (choise.equals("1")) {
-            if (factoryName.equals("Bakery")) {
-                coins -= 150;
-                Factory tempFactory = new Bakery();
-                factories.add(tempFactory);
-                System.out.println("Factory added!!");
-            } else if (factoryName.equals("IceCreamMaker")) {
-                coins -= 150;
-                Factory tempFactory = new IceCreamMaker();
-                factories.add(tempFactory);
-                System.out.println("Factory added!!");
-            } else if (factoryName.equals("Loom")) {
-                coins -= 150;
-                Factory tempFactory = new Loom();
-                factories.add(tempFactory);
-                System.out.println("Factory added!!");
-            } else if (factoryName.equals("MilkPack")) {
-                coins -= 150;
-                Factory tempFactory = new MilkPack();
-                factories.add(tempFactory);
-                System.out.println("Factory added!!");
-            } else if (factoryName.equals("Mill")) {
-                coins -= 150;
-                Factory tempFactory = new Mill();
-                factories.add(tempFactory);
-                System.out.println("Factory added!!");
-            } else if (factoryName.equals("Tailoring")) {
-                coins -= 150;
-                Factory tempFactory = new Tailoring();
-                factories.add(tempFactory);
-                System.out.println("Factory added!!");
-            } else {
-                System.err.println("there is not factory with this name!!!");
-                System.out.println(ConsoleColors.RED + factoryName + " not added!" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.RED + factoryName + " doesn't exist!" + ConsoleColors.RESET);
+    }
+
+    public void updateFactory(String name) {
+        for (Factory f : factories) {
+            if (f.getName().equalsIgnoreCase(name)) {
+                if (coins >= f.getUpdateCoins()) {
+                    f.update();
+                    return;
+                } else
+                    System.out.println(ConsoleColors.RED + "you don't have enough money!" + ConsoleColors.RESET);
             }
         }
+        System.out.println(ConsoleColors.RED + "factory " + name + " doesn't exist!" + ConsoleColors.RESET);
     }
 
     public void turn(int n) {
@@ -459,13 +434,14 @@ public class Manager {
 
     private void workFactories() {
         for (Factory factory : factories) {
-            if (factory.getTime() != -1 && time >= factory.time + factory.getTimeToProduce()) {
+            if (factory.getTime() != -1 && time >= factory.time + factory.getTime_need_produce()) {
                 Random random = new Random();
                 int x = random.nextInt(5);
                 int y = random.nextInt(5);
                 Product product = new Product(factory.outProduct, x, y);
                 products.add(product);
                 factory.setTime(-1);
+                break;
             }
         }
     }
@@ -538,6 +514,8 @@ public class Manager {
         System.out.println(time);
         System.out.print("coins : ");
         System.out.println(coins);
+        for (Factory f : factories)
+            System.out.println(f.toString());
         for (WildAnimal wild : wilds)
             wild.print();
         for (DomesticAnimal d : domestics)
@@ -549,9 +527,6 @@ public class Manager {
         for (Product product : products)
             System.out.println(product.toString());
 
-        for (Factory f : factories) {
-            System.out.println(f.toString());
-        }
         System.out.println("store capacity : " + store.getRemaining());
 
 
@@ -599,7 +574,7 @@ public class Manager {
     }
 
     public void truckUnload(String name, int amount) {
-        if (truck.getGoTime()==-1) {
+        if (truck.getGoTime() == -1) {
             if (truck.getProductInTruck().get(name) != null) {
                 if (store.wildAnimalCap.get(name) != null) {
                     if (truck.getProductInTruck().get(name) >= amount) {
@@ -627,8 +602,7 @@ public class Manager {
             } else {
                 System.err.println("there is not enough thing in the truck!!!");
             }
-        }
-        else
+        } else
             System.out.println(ConsoleColors.RED + "truck is on way!" + ConsoleColors.RESET);
     }
 
@@ -643,8 +617,8 @@ public class Manager {
     }
 
     public void newFactory(String name) {
-        if (factories.size()>=6)
-            System.out.println(ConsoleColors.RED+"no space to new factory!"+ConsoleColors.RESET);
+        if (factories.size() >= 6)
+            System.out.println(ConsoleColors.RED + "no space to new factory!" + ConsoleColors.RESET);
         else {
             if (name.equalsIgnoreCase("Mill")) {
                 Mill mill = new Mill();

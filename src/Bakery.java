@@ -1,7 +1,7 @@
 public class Bakery extends Factory{
 
     public Bakery() {
-        super("flour", "bread",250);
+        super("flour", "bread",250,5);
     }
 
     @Override
@@ -9,8 +9,5 @@ public class Bakery extends Factory{
         return "Bakery";
     }
 
-    @Override
-    public int getTimeToProduce() {
-        return 5;
-    }
+
 }

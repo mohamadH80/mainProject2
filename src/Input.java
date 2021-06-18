@@ -97,8 +97,10 @@ public class Input {
                 truckGo();
             } else if (Pattern.compile("[iI][nN][qQ][uU][iI][rR][Yy]").matcher(order).find()) {
                 manager.show();
-            } else if (Pattern.compile("[nN][eE][wW] [fF][aA][cC][tT][oO][rR][yY] \\w+").matcher(order).find()){
+            } else if (Pattern.compile("[nN][eE][wW] [fF][aA][cC][tT][oO][rR][yY] \\w+").matcher(order).find()) {
                 manager.newFactory(order.split("\\s")[2]);
+            } else if (Pattern.compile("[uU][pP][dD][aA][tT][eE] [fF][aA][cC][tT][oO][rR][yY] \\w+").matcher(order).find()) {
+                manager.updateFactory(order.split("\\s")[2]);
             } else {
                 System.out.println(ConsoleColors.RED + "wrong command!" + ConsoleColors.RESET);
             }
@@ -488,8 +490,8 @@ public class Input {
             user = user.substring(1, user.length() - 1);
             pass = pass.substring(1, pass.length() - 1);
             if (user.equals(username)) {
-                String newLevel="";
-                System.out.println("lines[i]="+lines[i]);
+                String newLevel = "";
+                System.out.println("lines[i]=" + lines[i]);
                 if (level == 2) {
                     newLevel = "[1,1,0,0,0]";
                 } else if (level == 3) {
