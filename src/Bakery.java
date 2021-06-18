@@ -1,6 +1,6 @@
 public class Bakery extends Factory{
 
-    public Bakery(String inProduct, String outProduct) {
+    public Bakery() {
         super("flour", "bread");
     }
 

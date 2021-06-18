@@ -1,7 +1,7 @@
 public class IceCreamMaker extends Factory{
 
 
-    public IceCreamMaker(String inProduct, String outProduct) {
+    public IceCreamMaker() {
         super("pocketMilk", "iceCream");
     }
 

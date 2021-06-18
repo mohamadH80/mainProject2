@@ -6,7 +6,8 @@ public class User {
     public User(String username, String pass) {
         this.username = username;
         this.pass = pass;
-        levels = new short[100];
+        levels = new short[5];
+        levels[0]=1;
     }
 
     public int lastOpenLevel() {

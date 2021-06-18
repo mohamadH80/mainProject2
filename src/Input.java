@@ -103,7 +103,6 @@ public class Input {
             }
             finish = checkEnd(level);
         }
-
         System.out.println("congratulation!\tyou win level " + level+"");
         menu();
     }
@@ -124,8 +123,15 @@ public class Input {
         return true;
     }
 
-    private boolean e1() {
-        return manager.store.allProductsCap.get("egg") == 6;
+    private boolean e1()
+    {
+        if (manager.store.allProductsCap.get("egg") == 6)
+        {
+            newLevel(manager);
+            fileChange(fileCopy(file),2,nowUserName);
+            return true;
+        }
+        return false;
     }
 
     private boolean e2() {
@@ -134,11 +140,23 @@ public class Input {
             if (d.getName().equalsIgnoreCase("hen"))
                 hens++;
         }
-        return manager.store.allProductsCap.get("egg") == 2 && hens == 2;
+        if (manager.store.allProductsCap.get("egg") == 2 && hens == 2)
+        {
+            newLevel(manager);
+            fileChange(fileCopy(file),3,nowUserName);
+            return true;
+        }
+        return false;
     }
 
     private boolean e3() {
-        return manager.store.allProductsCap.get("flour") == 2 && manager.getCoins() == 300;
+        if (manager.store.allProductsCap.get("flour") == 2 && manager.getCoins() == 300)
+        {
+            fileChange(fileCopy(file),4,nowUserName);
+            newLevel(manager);
+            return true;
+        }
+        return false;
     }
 
     private boolean e4() {
@@ -147,18 +165,40 @@ public class Input {
             if (d.getName().equalsIgnoreCase("hen"))
                 hens++;
         }
-        return manager.store.allProductsCap.get("flour") == 6 &&
-                manager.getCoins() == 500 &&
-                hens == 5;
-
+        if (manager.store.allProductsCap.get("flour") == 6 && manager.getCoins() == 500 && hens == 5)
+        {
+            fileChange(fileCopy(file),5,nowUserName);
+            newLevel(manager);
+            return true;
+        }
+        return false;
     }
 
     private boolean e5() {
-        return manager.store.allProductsCap.get("egg") == 9 &&
-                manager.store.allProductsCap.get("flour") == 5 &&
-                manager.store.allProductsCap.get("bread") == 1;
+        if (manager.store.allProductsCap.get("egg") == 9 && manager.store.allProductsCap.get("flour") == 5 && manager.store.allProductsCap.get("bread") == 1)
+        {
+            newLevel(manager);
+            return true;
+        }
+        return false;
+
     }
 
+    private void newLevel(Manager manager)
+    {
+        manager.wilds.clear();
+        manager.factories.clear();
+        manager.store=null;
+        manager.products.clear();
+        manager.well=null;
+        manager.cats.clear();
+        manager.dogs.clear();
+        for (int i=0;i<6;i++)
+            for (int j=0;j<6;j++)
+                manager.grasses[i][j]=0;
+        manager.setCoins(0);
+        manager.setTime(0);
+    }
 
     private void checkStart(int level) {
         switch (level) {
@@ -190,8 +230,8 @@ public class Input {
         manager.wilds.add(new Bear());
         manager.wilds.add(new Bear());
     }
-
-    private void s3() {
+    private void s3()
+    {
         manager.setCoins(100);
         manager.wilds.add(new Bear());
 //        manager.wilds.add(new Bear());
@@ -212,10 +252,12 @@ public class Input {
         manager.factories.add(new Mill());
     }
 
+
     private void truckUnload(String[] input) {
         String name = input[2];
         int am = 0;
         System.out.println("enter your amount");
+        am=scanner.nextInt();
         manager.truckUnload(name, am);
     }
 
@@ -277,12 +319,14 @@ public class Input {
         }
     }
 
-    public void login() {
+    public void login()
+    {
         boolean haveUser = false;
         String pass;
         System.out.print("enter username : ");
         String name = scanner.nextLine();
-        try {
+        try
+        {
             String line = "";
             fileReader = new FileReader("property");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -290,7 +334,8 @@ public class Input {
                 Object object = parser.parse(line);
                 JsonObject jsonObject = (JsonObject) object;
                 String username = jsonObject.get("username").toString();
-                if (username.substring(1, username.length() - 1).equals(name)) {
+                if (username.substring(1, username.length() - 1).equals(name)) 
+                {
                     haveUser = true;
                     System.out.println(ConsoleColors.RED + "Enter your password!!!" + ConsoleColors.RESET);
                     bufferedReader.close();
@@ -299,7 +344,7 @@ public class Input {
                     if (passCertificate.substring(1, passCertificate.length() - 1).equals(pass)) {
                         System.out.println(ConsoleColors.GREEN + "Welcome :) !!!" + ConsoleColors.RESET);
                         nowUserName = name;
-                        startMenu();
+                        startMenu(username.substring(1, username.length() - 1));
                     } else {
                         System.err.println("your pass incorrect ReEnter your pass you can write (back) to go to menu:||");
                         pass = scanner.nextLine();
@@ -311,7 +356,7 @@ public class Input {
                                 return;
                             }
                         }
-                        startMenu();
+                        startMenu(username.substring(1, username.length() - 1));
                         return;
                     }
                 }
@@ -333,31 +378,90 @@ public class Input {
         return pattern.matcher(s).matches();
     }
 
-    public void startMenu() {
+    public void startMenu(String name)
+    {
+        String templevels="";
+        String[] levels=new String[5];
+        String line="";
+        try
+        {
+            FileReader fileReader=new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            while ((line = bufferedReader.readLine()) != null)
+            {
+                Object object = parser.parse(line);
+                JsonObject jsonObject = (JsonObject) object;
+                if (jsonObject.get("username").toString().substring(1,jsonObject.get("username").toString().length()-1).equals(name))
+                {
+                    templevels = jsonObject.get("levels").toString();
+                    levels[0]=templevels.substring(1,2);
+                    levels[1]=templevels.substring(3,4);
+                    levels[2]=templevels.substring(5,6);
+                    levels[3]=templevels.substring(7,8);
+                    levels[4]=templevels.substring(9,10);
+                }
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.println("ERROR");
+        }
         String level;
         String choose;
         System.out.println(ConsoleColors.GREEN + "Enter your order :)" + ConsoleColors.RESET);
         System.out.println("1-Start 2-Logout 3-Setting");
         choose = scanner.nextLine();
-        if (choose.equals("1")) {
+        if (choose.equals("1"))
+        {
+            for (int i=0;i<5;i++)
+            {
+                if (levels[i].equals("1"))
+                    System.out.print((i+1)+" : open, ");
+                else
+                    System.out.print((i+1)+" : close, ");
+            }
+            System.out.println();
             System.out.println("enter your level you can Enter (back) to return to menu!!!");
             level = scanner.nextLine();
-            while (!isNumberic(level) && !level.equals("back")) {
+            while (!isNumberic(level) && !level.equals("back"))
+            {
                 System.out.println(ConsoleColors.RED + "your input must be number :|" + ConsoleColors.RESET);
                 level = scanner.nextLine();
             }
-            if (isNumberic(level)) {
-                run(Integer.parseInt(level));
-            } else if (level.equals("back")) {
-                startMenu();
+            if (isNumberic(level))
+            {
+                if (Integer.parseInt(level)>5 || Integer.parseInt(level)<=0)
+                {
+                    System.err.println("your number must be between 1 and 5 !!!");
+                    startMenu(name);
+                }
+                else if (Integer.parseInt(levels[Integer.parseInt(level)-1])==1)
+                {
+                    run(Integer.parseInt(level));
+                }
+                else
+                {
+                    System.err.println("Your inpute level is locked!!!");
+                    startMenu(name);
+                }
             }
-        } else if (choose.equals("2")) {
+            else if (level.equals("back"))
+            {
+                startMenu(name);
+            }
+        }
+        else if (choose.equals("2"))
+        {
             menu();
-        } else if (choose.equals("3")) {
+        }
+        else if (choose.equals("3"))
+        {
             setting();
-        } else {
+        }
+        else
+        {
             System.out.println(ConsoleColors.RED + "your input invalid!!" + ConsoleColors.RESET);
-            startMenu();
+            startMenu(name);
         }
     }
 
@@ -382,4 +486,89 @@ public class Input {
         manager.truckGo();
     }
 
+    private String[] fileCopy(File file)
+    {
+        int i=0;
+        String line="";
+        String[] fileStringArray=new String[1000];
+        try
+        {
+            fileReader=new FileReader(file);
+            BufferedReader bufferedReader=new BufferedReader(fileReader);
+            while ((line=bufferedReader.readLine())!=null)
+            {
+                fileStringArray[i]=line;
+                i++;
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.println("ERROR");
+        }
+        return fileStringArray;
+    }
+    private void fileChange(String[] lines,int level,String username)
+    {
+        int i=0,linesLength=0;
+        while (lines[i]!=null)
+        {
+            String line=lines[i];
+            Object object = parser.parse(line);
+            JsonObject jsonObject = (JsonObject) object;
+            String user = jsonObject.get("username").toString();
+            String pass = jsonObject.get("username").toString();
+            user=user.substring(1,user.length()-1);
+            pass=pass.substring(1,pass.length()-1);
+            if (user.equals(username))
+            {
+                if (level==2)
+                {
+                    String newLevel="[1,1,0,0,0]";
+                    lines[i]="{\"levels\":"+newLevel+",\"username\":\""+user+"\",\"pass\":\""+pass+"\"}";
+                }
+                else if (level==3)
+                {
+                    String newLevel="[1,1,1,0,0]";
+                    lines[i]="{\"levels\":"+newLevel+",\"username\":\""+user+"\",\"pass\":\""+pass+"\"}";
+                }
+                else if (level==4)
+                {
+                    String newLevel="[1,1,1,1,0]";
+                    lines[i]="{\"levels\":"+newLevel+",\"username\":\""+user+"\",\"pass\":\""+pass+"\"}";
+                }
+                else if (level==5)
+                {
+                    String newLevel="[1,1,1,1,1]";
+                    lines[i]="{\"levels\":"+newLevel+",\"username\":\""+user+"\",\"pass\":\""+pass+"\"}";
+                }
+            }
+            i++;
+        }
+        linesLength=i;
+        i=0;
+        while (lines[i]!=null)
+        {
+            try
+            {
+                if (i==0)
+                {
+                    FileWriter fileWriter2=new FileWriter(file);
+                    fileWriter2.write("");
+                    fileWriter2.close();
+                }
+                FileWriter fileWriter=new FileWriter(file,true);
+                BufferedWriter bufferedWriter=new BufferedWriter(fileWriter);
+                bufferedWriter.write(lines[i]);
+                if (i!=(linesLength-1))
+                bufferedWriter.newLine();
+                bufferedWriter.close();
+                fileWriter.close();
+            }
+            catch (IOException e)
+            {
+                System.out.println("eRRor");
+            }
+            i++;
+        }
+    }
 }

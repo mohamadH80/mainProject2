@@ -8,6 +8,7 @@ public abstract class Factory {
         this.inProduct = inProduct;
         this.outProduct = outProduct;
         time=-1;
+        factoryLevel=1;
     }
 
     public int getTime() {
@@ -21,6 +22,5 @@ public abstract class Factory {
     abstract public String getName();
 
     abstract public int getTimeToProduce();
-
 
 }

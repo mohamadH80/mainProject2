@@ -25,7 +25,7 @@ public class Truck {
         productInTruck.put("Bear", 0);
         productInTruck.put("Lion", 0);
         productInTruck.put("Tiger", 0);
-
+        truckCapacity=15;
     }
 
     public void upgradeTruck() {

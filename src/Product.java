@@ -32,7 +32,7 @@ public class Product {
         return name;
     }
 
-    public int findPrice(String nam) {
+    public static int findPrice(String nam) {
         if ("egg".equals(nam)) {
             return 15;
         } else if ("feather".equals(nam)) {
