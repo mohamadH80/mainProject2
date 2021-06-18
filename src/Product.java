@@ -16,22 +16,6 @@ public class Product {
         this.time = Input.manager.getTime();
     }
 
-    public int getVolume() {
-        return volume;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public static int findPrice(String nam) {
         if ("egg".equals(nam)) {
             return 15;
@@ -53,6 +37,22 @@ public class Product {
             return 120;
         }
         return -1;
+    }
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public static int findVolume(String name) {
