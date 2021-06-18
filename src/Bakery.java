@@ -1,7 +1,7 @@
 public class Bakery extends Factory{
 
     public Bakery() {
-        super("flour", "bread");
+        super("flour", "bread",250);
     }
 
     @Override

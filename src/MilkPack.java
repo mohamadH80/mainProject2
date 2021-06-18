@@ -1,7 +1,7 @@
 public class MilkPack extends Factory {
 
     public MilkPack() {
-        super("milk", "pocketMilk");
+        super("milk", "pocketMilk",400);
     }
 
     @Override

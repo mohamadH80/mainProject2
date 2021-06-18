@@ -1,7 +1,7 @@
 public class Tailoring extends Factory {
 
     public Tailoring() {
-        super("cloth", "shirt");
+        super("cloth", "shirt",400);
     }
 
     @Override

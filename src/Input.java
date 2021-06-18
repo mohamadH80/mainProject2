@@ -97,6 +97,8 @@ public class Input {
                 truckGo();
             } else if (Pattern.compile("[iI][nN][qQ][uU][iI][rR][Yy]").matcher(order).find()) {
                 manager.show();
+            } else if (Pattern.compile("[nN][eE][wW] [fF][aA][cC][tT][oO][rR][yY] \\w+").matcher(order).find()){
+                manager.newFactory(order.split("\\s")[2]);
             } else {
                 System.out.println(ConsoleColors.RED + "wrong command!" + ConsoleColors.RESET);
             }
@@ -235,7 +237,6 @@ public class Input {
         manager.domestics.add(new Hen());
         manager.factories.add(new Mill());
     }
-
 
     private void newLevel(Manager manager) {
         manager.wilds.clear();
@@ -487,19 +488,19 @@ public class Input {
             user = user.substring(1, user.length() - 1);
             pass = pass.substring(1, pass.length() - 1);
             if (user.equals(username)) {
+                String newLevel="";
+                System.out.println("lines[i]="+lines[i]);
                 if (level == 2) {
-                    String newLevel = "[1,1,0,0,0]";
-                    lines[i] = "{\"levels\":" + newLevel + ",\"username\":\"" + user + "\",\"pass\":\"" + pass + "\"}";
+                    newLevel = "[1,1,0,0,0]";
                 } else if (level == 3) {
-                    String newLevel = "[1,1,1,0,0]";
-                    lines[i] = "{\"levels\":" + newLevel + ",\"username\":\"" + user + "\",\"pass\":\"" + pass + "\"}";
+                    newLevel = "[1,1,1,0,0]";
                 } else if (level == 4) {
-                    String newLevel = "[1,1,1,1,0]";
-                    lines[i] = "{\"levels\":" + newLevel + ",\"username\":\"" + user + "\",\"pass\":\"" + pass + "\"}";
+                    newLevel = "[1,1,1,1,0]";
                 } else if (level == 5) {
-                    String newLevel = "[1,1,1,1,1]";
-                    lines[i] = "{\"levels\":" + newLevel + ",\"username\":\"" + user + "\",\"pass\":\"" + pass + "\"}";
+                    newLevel = "[1,1,1,1,1]";
                 }
+                lines[i] = "{\"levels\":" + newLevel + ",\"username\":\"" + user + "\",\"pass\":\"" + pass + "\"}";
+                break;
             }
             i++;
         }

@@ -548,76 +548,88 @@ public class Manager {
             System.out.println(dog.toString());
         for (Product product : products)
             System.out.println(product.toString());
+
+        for (Factory f : factories) {
+            System.out.println(f.toString());
+        }
         System.out.println("store capacity : " + store.getRemaining());
+
 
     }
 
     public void truckLoad(String name, int amount) {
-        if (store.allProductsCap.get(name) != null) {
-            if (store.allProductsCap.get(name) >= amount && truck.getTruckCapacity() > 0) {
-                truck.setTruckCapacity(truck.getTruckCapacity() - (amount * Product.findVolume(name)));
-                if (truck.getTruckCapacity() >= 0) {
-                    store.allProductsCap.replace(name, store.allProductsCap.get(name) - amount);
-                    truck.getProductInTruck().replace(name, amount + truck.getProductInTruck().get(name));
-                    System.out.println("the truck load is done!!");
-                } else {
-                    truck.setTruckCapacity(truck.getTruckCapacity() + (amount * Product.findVolume(name)));
-                    System.out.println("here is not enough space in truck!!!");
+        if (truck.getGoTime() == -1) {
+            if (store.allProductsCap.get(name) != null) {
+                if (store.allProductsCap.get(name) >= amount && truck.getTruckCapacity() > 0) {
+                    truck.setTruckCapacity(truck.getTruckCapacity() - (amount * Product.findVolume(name)));
+                    if (truck.getTruckCapacity() >= 0) {
+                        store.allProductsCap.replace(name, store.allProductsCap.get(name) - amount);
+                        truck.getProductInTruck().replace(name, amount + truck.getProductInTruck().get(name));
+                        System.out.println("the truck load is done!!");
+                    } else {
+                        truck.setTruckCapacity(truck.getTruckCapacity() + (amount * Product.findVolume(name)));
+                        System.out.println("here is not enough space in truck!!!");
+                    }
+                } else if (store.allProductsCap.get(name) < amount) {
+                    System.out.println(ConsoleColors.RED + "there is not enough product in the store!!" + ConsoleColors.RESET);
+                } else if (truck.getTruckCapacity() <= 0) {
+                    System.err.println("there is not enough space in truck!!!");
                 }
-            } else if (store.allProductsCap.get(name) < amount) {
-                System.out.println(ConsoleColors.RED + "there is not enough product in the store!!" + ConsoleColors.RESET);
-            } else if (truck.getTruckCapacity() <= 0) {
-                System.err.println("there is not enough space in truck!!!");
-            }
-        } else if (store.wildAnimalCap.get(name) != null) {
-            if (store.wildAnimalCap.get(name) >= amount && truck.getTruckCapacity() > 0) {
-                truck.setTruckCapacity(truck.getTruckCapacity() - (amount * 15));
-                if (truck.getTruckCapacity() >= 0) {
-                    store.wildAnimalCap.replace(name, store.wildAnimalCap.get(name) - amount);
-                    truck.getProductInTruck().replace(name, amount + truck.getProductInTruck().get(name));
-                    System.out.println("the truck load is done!!");
-                } else {
-                    truck.setTruckCapacity(truck.getTruckCapacity() + (amount * 15));
-                    System.err.println("there isnt enough space in truck!!!");
+            } else if (store.wildAnimalCap.get(name) != null) {
+                if (store.wildAnimalCap.get(name) >= amount && truck.getTruckCapacity() > 0) {
+                    truck.setTruckCapacity(truck.getTruckCapacity() - (amount * 15));
+                    if (truck.getTruckCapacity() >= 0) {
+                        store.wildAnimalCap.replace(name, store.wildAnimalCap.get(name) - amount);
+                        truck.getProductInTruck().replace(name, amount + truck.getProductInTruck().get(name));
+                        System.out.println("the truck load is done!!");
+                    } else {
+                        truck.setTruckCapacity(truck.getTruckCapacity() + (amount * 15));
+                        System.err.println("there isnt enough space in truck!!!");
+                    }
+                } else if (store.wildAnimalCap.get(name) < amount) {
+                    System.out.println(ConsoleColors.RED + "there is not enough product in the store!!" + ConsoleColors.RESET);
+                } else if (truck.getTruckCapacity() <= 0) {
+                    System.err.println("there is not enough space in truck!!!");
                 }
-            } else if (store.wildAnimalCap.get(name) < amount) {
-                System.out.println(ConsoleColors.RED + "there is not enough product in the store!!" + ConsoleColors.RESET);
-            } else if (truck.getTruckCapacity() <= 0) {
-                System.err.println("there is not enough space in truck!!!");
+            } else {
+                System.out.println("the product name is unavailable!!!");
             }
-        } else {
-            System.out.println("the product name is unavailable!!!");
-        }
+        } else
+            System.out.println(ConsoleColors.RED + "truck is on way!" + ConsoleColors.RESET);
     }
 
     public void truckUnload(String name, int amount) {
-        if (truck.getProductInTruck().get(name) != null) {
-            if (store.wildAnimalCap.get(name) != null) {
-                if (truck.getProductInTruck().get(name) >= amount) {
-                    truck.setTruckCapacity(truck.getTruckCapacity() + (amount * 15));
-                    truck.getProductInTruck().replace(name, truck.getProductInTruck().get(name) - amount);
-                    store.wildAnimalCap.replace(name, amount + store.wildAnimalCap.get(name));
-                    System.out.println("the order has done!!!");
-                } else if (truck.getProductInTruck().get(name) < amount) {
-                    System.out.println(ConsoleColors.RED + "there is not enough product in truck!!!" + ConsoleColors.RESET);
-                } else {
-                    System.out.println("there is not product in the truck!!!");
+        if (truck.getGoTime()==-1) {
+            if (truck.getProductInTruck().get(name) != null) {
+                if (store.wildAnimalCap.get(name) != null) {
+                    if (truck.getProductInTruck().get(name) >= amount) {
+                        truck.setTruckCapacity(truck.getTruckCapacity() + (amount * 15));
+                        truck.getProductInTruck().replace(name, truck.getProductInTruck().get(name) - amount);
+                        store.wildAnimalCap.replace(name, amount + store.wildAnimalCap.get(name));
+                        System.out.println("the order has done!!!");
+                    } else if (truck.getProductInTruck().get(name) < amount) {
+                        System.out.println(ConsoleColors.RED + "there is not enough product in truck!!!" + ConsoleColors.RESET);
+                    } else {
+                        System.out.println("there is not product in the truck!!!");
+                    }
+                } else if (store.allProductsCap.get(name) != null) {
+                    if (truck.getProductInTruck().get(name) >= amount) {
+                        truck.setTruckCapacity(truck.getTruckCapacity() + (amount * Product.findVolume(name)));
+                        truck.getProductInTruck().replace(name, truck.getProductInTruck().get(name) - amount);
+                        store.allProductsCap.replace(name, amount + store.allProductsCap.get(name));
+                        System.out.println("the order has done!!!");
+                    } else if (truck.getProductInTruck().get(name) < amount) {
+                        System.out.println(ConsoleColors.RED + "there is not enough product in truck!!!" + ConsoleColors.RESET);
+                    } else {
+                        System.out.println("there is not product in the truck!!!");
+                    }
                 }
-            } else if (store.allProductsCap.get(name) != null) {
-                if (truck.getProductInTruck().get(name) >= amount) {
-                    truck.setTruckCapacity(truck.getTruckCapacity() + (amount * Product.findVolume(name)));
-                    truck.getProductInTruck().replace(name, truck.getProductInTruck().get(name) - amount);
-                    store.allProductsCap.replace(name, amount + store.allProductsCap.get(name));
-                    System.out.println("the order has done!!!");
-                } else if (truck.getProductInTruck().get(name) < amount) {
-                    System.out.println(ConsoleColors.RED + "there is not enough product in truck!!!" + ConsoleColors.RESET);
-                } else {
-                    System.out.println("there is not product in the truck!!!");
-                }
+            } else {
+                System.err.println("there is not enough thing in the truck!!!");
             }
-        } else {
-            System.err.println("there is not enough thing in the truck!!!");
         }
+        else
+            System.out.println(ConsoleColors.RED + "truck is on way!" + ConsoleColors.RESET);
     }
 
     public void truckGo() {
@@ -625,8 +637,63 @@ public class Manager {
             if (truck.getTruckCapacity() != truck.getMAX_Cap())
                 truck.setGoTime(time);
             else
-                System.out.println(ConsoleColors.RED+"truck is empty!"+ConsoleColors.RESET);
+                System.out.println(ConsoleColors.RED + "truck is empty!" + ConsoleColors.RESET);
         } else
             System.out.println(ConsoleColors.RED + "truck is on way" + ConsoleColors.RESET);
+    }
+
+    public void newFactory(String name) {
+        if (factories.size()>=6)
+            System.out.println(ConsoleColors.RED+"no space to new factory!"+ConsoleColors.RESET);
+        else {
+            if (name.equalsIgnoreCase("Mill")) {
+                Mill mill = new Mill();
+                if (coins >= mill.price) {
+                    factories.add(mill);
+                    coins -= mill.price;
+                } else
+                    System.out.println("you don't have money!");
+
+            } else if (name.equalsIgnoreCase("Bakery")) {
+                Bakery bakery = new Bakery();
+                if (coins >= bakery.price) {
+                    factories.add(bakery);
+                    coins -= bakery.price;
+                } else
+                    System.out.println("you don't have money!");
+
+            } else if (name.equalsIgnoreCase("iceCreamMaker")) {
+                IceCreamMaker ice = new IceCreamMaker();
+                if (coins >= ice.price) {
+                    factories.add(ice);
+                    coins -= ice.price;
+                } else
+                    System.out.println("you don't have money!");
+
+            } else if (name.equalsIgnoreCase("Loom")) {
+                Loom loom = new Loom();
+                if (coins >= loom.price) {
+                    factories.add(loom);
+                    coins -= loom.price;
+                } else
+                    System.out.println("you don't have money!");
+
+            } else if (name.equalsIgnoreCase("MilkPack")) {
+                MilkPack mill = new MilkPack();
+                if (coins >= mill.price) {
+                    factories.add(mill);
+                    coins -= mill.price;
+                } else
+                    System.out.println("you don't have money!");
+            } else if (name.equalsIgnoreCase("tailoring")) {
+                Tailoring tailoring = new Tailoring();
+                if (coins >= tailoring.price) {
+                    factories.add(tailoring);
+                    coins -= tailoring.price;
+                } else
+                    System.out.println("you don't have money!");
+            } else
+                System.out.println(ConsoleColors.RED + "factory doesn't exist!" + ConsoleColors.RESET);
+        }
     }
 }

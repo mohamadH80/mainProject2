@@ -1,7 +1,7 @@
 public class Loom extends Factory {
 
     public Loom() {
-        super("feather", "cloth");
+        super("feather", "cloth",250);
     }
 
     @Override

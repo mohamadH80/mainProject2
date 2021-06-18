@@ -1,7 +1,7 @@
 public class Mill extends Factory{
 
     public Mill() {
-        super("egg", "flour");
+        super("egg", "flour",150);
     }
 
     @Override

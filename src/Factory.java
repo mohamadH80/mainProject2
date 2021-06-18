@@ -4,11 +4,14 @@ public abstract class Factory {
     protected String outProduct;
     protected int factoryLevel;
     protected int time;
-    public Factory(String inProduct, String outProduct) {
+    protected int price;
+
+    public Factory(String inProduct, String outProduct, int price) {
         this.inProduct = inProduct;
         this.outProduct = outProduct;
-        time=-1;
-        factoryLevel=1;
+        time = -1;
+        factoryLevel = 1;
+        this.price = price;
     }
 
     public int getTime() {
@@ -23,4 +26,12 @@ public abstract class Factory {
 
     abstract public int getTimeToProduce();
 
+    @Override
+    public String toString() {
+        return "Factory{" +
+                "name=" + getName() +
+                "factoryLevel=" + factoryLevel +
+                ", time=" + time +
+                '}';
+    }
 }
