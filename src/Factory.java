@@ -36,8 +36,6 @@ public abstract class Factory {
 
     abstract public String getName();
 
-//    abstract public int getTimeToProduce();
-
     public void update() {
         time_need_produce /= 2;
         factoryLevel++;

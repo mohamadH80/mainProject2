@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 //todo truck and updates remain
 public class Manager {
-    static Logger logger=Logger.getLogger(Logger.class.getName());
+    static Logger logger = Logger.getLogger(Logger.class.getName());
     ArrayList<DomesticAnimal> domestics = new ArrayList<DomesticAnimal>();
     ArrayList<WildAnimal> wilds = new ArrayList<WildAnimal>();
     ArrayList<Product> products = new ArrayList<Product>();
@@ -75,8 +75,7 @@ public class Manager {
             System.out.println(ConsoleColors.RED + "there isn't any product here!" + ConsoleColors.RESET);
     }
 
-    public void well()
-    {
+    public void well() {
         if (well.getRemaining() == well.getCapacity())
             System.out.println(ConsoleColors.RED + "well is full" + ConsoleColors.RESET);
         else if (well.getTime() == -1)
@@ -217,9 +216,21 @@ public class Manager {
     }
 
     public void turn(int n) {
-
+        boolean t1 = false, t2 = false, t3 = false;
         for (int i = 0; i < n; i++) {
             time++;
+            if (time>6 && !t1){
+                t1=true;
+                wilds.add(new Lion());
+            }
+            else if (time>12 && !t2){
+                t2=true;
+                wilds.add(new Tiger());
+            }
+            else if (time>18 && !t3){
+                t3=true;
+                wilds.add(new Bear());
+            }
             goTruckTurn();
             produce();
             destroyProducts();
@@ -465,8 +476,8 @@ public class Manager {
     }
 
     private void workCats() {
-        boolean haveSameProduct=false,getCat=false;
-        ArrayList<Integer> saveIndex2=new ArrayList<>();
+        boolean haveSameProduct = false, getCat = false;
+        ArrayList<Integer> saveIndex2 = new ArrayList<>();
 //        int saveIndex=-1;
         ArrayList<Integer> saveIndex = new ArrayList<Integer>();
         for (Cat cat : cats) {
@@ -490,27 +501,23 @@ public class Manager {
                 else if (ya - cat.getY() < 0) cat.setY(cat.getY() - 1);
             }
 
-            int t=saveIndex.size();
-            for (int j = 0; j < t ; j++) {
+            int t = saveIndex.size();
+            for (int j = 0; j < t; j++) {
                 if (products.get(saveIndex.get(j)).getX() == cat.getX() && products.get(saveIndex.get(j)).getY() == cat.getY()) {
-                    if (store.getCapacity() >= 0)
-                    {
+                    if (store.getCapacity() >= 0) {
                         int temp = saveIndex.get(j);
                         int c = store.allProductsCap.get(products.get(saveIndex.get(j)).getName());
                         store.allProductsCap.put(products.get(saveIndex.get(j)).getName(), c + 1);
                         saveIndex2.add(temp);
-                    }
-                    else
-                        {
-                        System.err.println("store is full!!!");
+                    } else {
+                        System.out.println(ConsoleColors.RED+"store is full!!!"+ConsoleColors.RESET);
                     }
                 }
             }
-            int t3=0;
-            if (saveIndex2.size()!=0)
-            t3=saveIndex2.get(0);
-            for (int u=0;u<saveIndex2.size();u++)
-            {
+            int t3 = 0;
+            if (saveIndex2.size() != 0)
+                t3 = saveIndex2.get(0);
+            for (int u = 0; u < saveIndex2.size(); u++) {
                 products.remove(t3);
             }
 
@@ -561,7 +568,7 @@ public class Manager {
                 } else if (store.allProductsCap.get(name) < amount) {
                     System.out.println(ConsoleColors.RED + "there is not enough product in the store!!" + ConsoleColors.RESET);
                 } else if (truck.getTruckCapacity() <= 0) {
-                    System.err.println("there is not enough space in truck!!!");
+                    System.out.println(ConsoleColors.RED+"there is not enough space in truck!!"+ConsoleColors.RESET);
                 }
             } else if (store.wildAnimalCap.get(name) != null) {
                 if (store.wildAnimalCap.get(name) >= amount && truck.getTruckCapacity() > 0) {
@@ -572,12 +579,12 @@ public class Manager {
                         System.out.println("the truck load is done!!");
                     } else {
                         truck.setTruckCapacity(truck.getTruckCapacity() + (amount * 15));
-                        System.err.println("there isnt enough space in truck!!!");
+                        System.out.println(ConsoleColors.RED+"there isnt enough space in truck!!!"+ConsoleColors.RESET);
                     }
                 } else if (store.wildAnimalCap.get(name) < amount) {
                     System.out.println(ConsoleColors.RED + "there is not enough product in the store!!" + ConsoleColors.RESET);
                 } else if (truck.getTruckCapacity() <= 0) {
-                    System.err.println("there is not enough space in truck!!!");
+                    System.out.println(ConsoleColors.RED+"there is not enough space in truck!!!"+ConsoleColors.RESET);
                 }
             } else {
                 System.out.println("the product name is unavailable!!!");
@@ -613,7 +620,7 @@ public class Manager {
                     }
                 }
             } else {
-                System.err.println("there is not enough thing in the truck!!!");
+                System.out.println(ConsoleColors.RED+"there is not enough thing in the truck!!!"+ConsoleColors.RESET);
             }
         } else
             System.out.println(ConsoleColors.RED + "truck is on way!" + ConsoleColors.RESET);
@@ -621,12 +628,9 @@ public class Manager {
 
     public void truckGo() {
         if (truck.getGoTime() == -1) {
-            if (truck.getTruckCapacity() != truck.getMAX_Cap())
-            {
+            if (truck.getTruckCapacity() != truck.getMAX_Cap()) {
                 truck.setGoTime(time);
-                System.out.println(ConsoleColors.RED + "truck is on way" + ConsoleColors.RESET);
-            }
-            else
+            } else
                 System.out.println(ConsoleColors.RED + "truck is empty!" + ConsoleColors.RESET);
         } else
             System.out.println(ConsoleColors.RED + "truck is on way" + ConsoleColors.RESET);
@@ -686,4 +690,5 @@ public class Manager {
                 System.out.println(ConsoleColors.RED + "factory doesn't exist!" + ConsoleColors.RESET);
         }
     }
+
 }

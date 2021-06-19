@@ -102,14 +102,36 @@ public class Input {
                 manager.newFactory(order.split("\\s")[2]);
             } else if (Pattern.compile("[uU][pP][dD][aA][tT][eE] [fF][aA][cC][tT][oO][rR][yY] \\w+").matcher(order).find()) {
                 manager.updateFactory(order.split("\\s")[2]);
+            } else if (Pattern.compile("[tT][aA][sS][kK]").matcher(order).find()) {
+                task(level);
             } else {
                 System.out.println(ConsoleColors.RED + "wrong command!" + ConsoleColors.RESET);
             }
-            Manager.logger.log(Level.INFO,"sssssss");
+            Manager.logger.log(Level.INFO, "sssssss");
             finish = checkEnd(level);
         }
         System.out.println("congratulation!\tyou win level " + level + "");
         menu();
+    }
+
+    private void task(int level) {
+        switch (level){
+            case 1:
+                System.out.println(ConsoleColors.WHITE+"6 egg"+ConsoleColors.RESET);
+                break;
+            case 2:
+                System.out.println(ConsoleColors.WHITE+"2 egg,2 hen"+ConsoleColors.RESET);
+                break;
+            case 3:
+                System.out.println(ConsoleColors.WHITE+"2 flour,300 coins"+ConsoleColors.RESET);
+                break;
+            case 4:
+                System.out.println(ConsoleColors.WHITE+"6 flour,5 hen,500 coins"+ConsoleColors.RESET);
+                break;
+            case 5:
+                System.out.println(ConsoleColors.WHITE+"9 egg,5 flour,1 bread"+ConsoleColors.RESET);
+                break;
+        }
     }
 
     private boolean checkEnd(int level) {
@@ -170,8 +192,8 @@ public class Input {
             if (d.getName().equalsIgnoreCase("hen"))
                 hens++;
         }
-        System.out.println("hen = "+hens);
-        System.out.println("egg = "+manager.store.allProductsCap.get("egg"));
+        System.out.println("hen = " + hens);
+        System.out.println("egg = " + manager.store.allProductsCap.get("egg"));
         if (manager.store.allProductsCap.get("egg") >= 2 && hens >= 2) {
             newLevel(manager);
             fileChange(fileCopy(file), 3, nowUserName);
@@ -318,7 +340,7 @@ public class Input {
                 System.out.println(ConsoleColors.PURPLE + "Enter the game with choose the login :)" + ConsoleColors.RESET);
                 menu();
             } catch (IOException exception) {
-                System.err.println("Error in opening account!!!");
+                System.out.println(ConsoleColors.RED + "Error in opening account!!!" + ConsoleColors.RESET);
             }
         } catch (IOException e) {
             System.out.println(ConsoleColors.RED + "error in signing up!!!" + ConsoleColors.RESET);
@@ -349,10 +371,10 @@ public class Input {
                         nowUserName = name;
                         startMenu(username.substring(1, username.length() - 1));
                     } else {
-                        System.err.println("your pass incorrect ReEnter your pass you can write (back) to go to menu:||");
+                        System.out.println(ConsoleColors.RED + "your pass incorrect ReEnter your pass you can write (back) to go to menu:||" + ConsoleColors.RESET);
                         pass = scanner.nextLine();
                         while (!passCertificate.substring(1, passCertificate.length() - 1).equals(pass) && !pass.equals("back")) {
-                            System.err.println("your pass word is wrong you can write (back) to go to menu :||");
+                            System.out.println(ConsoleColors.RED + "your pass word is wrong you can write (back) to go to menu :||" + ConsoleColors.RESET);
                             pass = scanner.nextLine();
                             if (pass.equals("back")) {
                                 menu();
@@ -424,12 +446,12 @@ public class Input {
             }
             if (isNumberic(level)) {
                 if (Integer.parseInt(level) > 5 || Integer.parseInt(level) <= 0) {
-                    System.err.println("your number must be between 1 and 5 !!!");
+                    System.out.println(ConsoleColors.RED + "your number must be between 1 and 5 !!!" + ConsoleColors.RESET);
                     startMenu(name);
                 } else if (Integer.parseInt(levels[Integer.parseInt(level) - 1]) == 1) {
                     run(Integer.parseInt(level));
                 } else {
-                    System.err.println("Your inpute level is locked!!!");
+                    System.out.println(ConsoleColors.RED + "Your inpute level is locked!!!" + ConsoleColors.RESET);
                     startMenu(name);
                 }
             } else if (level.equals("back")) {
