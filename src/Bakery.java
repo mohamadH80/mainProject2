@@ -1,4 +1,5 @@
-public class Bakery extends Factory{
+public class Bakery extends Factory
+{
 
     public Bakery() {
         super("flour", "bread",250,5);

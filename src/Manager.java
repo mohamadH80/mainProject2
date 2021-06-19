@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.Logger;
 
 //todo truck and updates remain
 public class Manager {
-
+    static Logger logger=Logger.getLogger(Logger.class.getName());
     ArrayList<DomesticAnimal> domestics = new ArrayList<DomesticAnimal>();
     ArrayList<WildAnimal> wilds = new ArrayList<WildAnimal>();
     ArrayList<Product> products = new ArrayList<Product>();
@@ -74,14 +75,14 @@ public class Manager {
             System.out.println(ConsoleColors.RED + "there isn't any product here!" + ConsoleColors.RESET);
     }
 
-    public void well() {
+    public void well()
+    {
         if (well.getRemaining() == well.getCapacity())
             System.out.println(ConsoleColors.RED + "well is full" + ConsoleColors.RESET);
         else if (well.getTime() == -1)
             well.setTime(time);
         else
             System.out.println(ConsoleColors.RED + "well is getting water!" + ConsoleColors.RESET);
-
     }
 
     public void plant(int x, int y) {
@@ -464,6 +465,8 @@ public class Manager {
     }
 
     private void workCats() {
+        boolean haveSameProduct=false,getCat=false;
+        ArrayList<Integer> saveIndex2=new ArrayList<>();
 //        int saveIndex=-1;
         ArrayList<Integer> saveIndex = new ArrayList<Integer>();
         for (Cat cat : cats) {
@@ -487,18 +490,28 @@ public class Manager {
                 else if (ya - cat.getY() < 0) cat.setY(cat.getY() - 1);
             }
 
-            for (int j = 0; j < saveIndex.size(); j++) {
+            int t=saveIndex.size();
+            for (int j = 0; j < t ; j++) {
                 if (products.get(saveIndex.get(j)).getX() == cat.getX() && products.get(saveIndex.get(j)).getY() == cat.getY()) {
-                    if (store.getCapacity() >= 0) {
+                    if (store.getCapacity() >= 0)
+                    {
                         int temp = saveIndex.get(j);
                         int c = store.allProductsCap.get(products.get(saveIndex.get(j)).getName());
                         store.allProductsCap.put(products.get(saveIndex.get(j)).getName(), c + 1);
-                        products.remove(temp);
-                        saveIndex.remove(j);
-                    } else {
+                        saveIndex2.add(temp);
+                    }
+                    else
+                        {
                         System.err.println("store is full!!!");
                     }
                 }
+            }
+            int t3=0;
+            if (saveIndex2.size()!=0)
+            t3=saveIndex2.get(0);
+            for (int u=0;u<saveIndex2.size();u++)
+            {
+                products.remove(t3);
             }
 
             if (products.size() == 0) walkH(cat);
@@ -609,7 +622,10 @@ public class Manager {
     public void truckGo() {
         if (truck.getGoTime() == -1) {
             if (truck.getTruckCapacity() != truck.getMAX_Cap())
+            {
                 truck.setGoTime(time);
+                System.out.println(ConsoleColors.RED + "truck is on way" + ConsoleColors.RESET);
+            }
             else
                 System.out.println(ConsoleColors.RED + "truck is empty!" + ConsoleColors.RESET);
         } else

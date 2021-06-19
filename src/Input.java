@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 
 import java.io.*;
 import java.util.Scanner;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 public class Input {
@@ -104,6 +105,7 @@ public class Input {
             } else {
                 System.out.println(ConsoleColors.RED + "wrong command!" + ConsoleColors.RESET);
             }
+            Manager.logger.log(Level.INFO,"sssssss");
             finish = checkEnd(level);
         }
         System.out.println("congratulation!\tyou win level " + level + "");
@@ -168,7 +170,9 @@ public class Input {
             if (d.getName().equalsIgnoreCase("hen"))
                 hens++;
         }
-        if (manager.store.allProductsCap.get("egg") == 2 && hens == 2) {
+        System.out.println("hen = "+hens);
+        System.out.println("egg = "+manager.store.allProductsCap.get("egg"));
+        if (manager.store.allProductsCap.get("egg") >= 2 && hens >= 2) {
             newLevel(manager);
             fileChange(fileCopy(file), 3, nowUserName);
             return true;
@@ -491,7 +495,6 @@ public class Input {
             pass = pass.substring(1, pass.length() - 1);
             if (user.equals(username)) {
                 String newLevel = "";
-                System.out.println("lines[i]=" + lines[i]);
                 if (level == 2) {
                     newLevel = "[1,1,0,0,0]";
                 } else if (level == 3) {
