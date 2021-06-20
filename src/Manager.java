@@ -546,7 +546,7 @@ public class Manager {
             System.out.println(dog.toString());
         for (Product product : products)
             System.out.println(product.toString());
-
+        printGrass();
         System.out.println("store capacity : " + store.getRemaining());
 
 
@@ -691,4 +691,12 @@ public class Manager {
         }
     }
 
+     private void printGrass(){
+         for (int i = 0; i < 6; i++) {
+             for (int j = 0; j < 6; j++) {
+                 System.out.print(grasses[j][i]+"\t");
+             }
+             System.out.println();
+         }
+     }
 }
