@@ -3,12 +3,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.io.*;
 import java.util.Scanner;
 import java.util.logging.*;
 import java.util.regex.Pattern;
 
 public class Input {
+    private static Clip clip;
     Logger logger = Logger.getLogger(Logger.class.getName());
     FileHandler fileHandler;
     SimpleFormatter simpleFormatter;
@@ -318,9 +321,15 @@ public class Input {
         String state = scanner.nextLine();
 
         if (state.equals("1"))
+        {
             login();
+            return;
+        }
         else if (state.equals("2"))
+        {
             signup();
+            return;
+        }
         else {
             System.out.println(ConsoleColors.RED + "wrong :||" + ConsoleColors.RESET);
             menu();
@@ -364,6 +373,7 @@ public class Input {
                 System.out.println(ConsoleColors.PURPLE + "Enter the game with choose the login :)" + ConsoleColors.RESET);
                 log(name+" signed up successfully !!!");
                 menu();
+                return;
             } catch (IOException exception) {
                 System.out.println(ConsoleColors.RED + "Error in opening account!!!" + ConsoleColors.RESET);
             }
@@ -390,7 +400,7 @@ public class Input {
                     haveUser = true;
                     log(name+" has logged in!!!");
                     System.out.println(ConsoleColors.RED + "Enter your password!!!" + ConsoleColors.RESET);
-                    bufferedReader.close();
+                  //  bufferedReader.close();
                     pass = scanner.nextLine();
                     String passCertificate = jsonObject.get("pass").toString();
                     if (passCertificate.substring(1, passCertificate.length() - 1).equals(pass)) {
@@ -428,6 +438,7 @@ public class Input {
             System.out.println(ConsoleColors.RED + "there is no user with this username!!!!" + ConsoleColors.RESET);
             logWarn(name+" try to login but there is not username with this name!!!");
             menu();
+            return;
         }
     }
 
@@ -499,6 +510,7 @@ public class Input {
             }
         } else if (choose.equals("2")) {
             menu();
+            return;
         } else if (choose.equals("3")) {
             setting();
         } else {
@@ -507,8 +519,81 @@ public class Input {
         }
     }
 
-    public void setting() {
+    public void setting()
+    {
+        System.out.println("which singer do you want to paly in game?");
+        System.out.println("1:Shadmehr 2:Ebi 3:Moein 4:sattar 5:Shamaeezadeh 6:Andy , back to return to menu");
+        String choose=scanner.nextLine();
+        if (choose.equals("1"))
+        {
+            closemusic();
+            playmusic("shadmehr.wav",2000);
+        }
+        else if (choose.equals("2"))
+        {
+            closemusic();
+            playmusic("ebi.wav",2000);
+        }
+        else if (choose.equals("3"))
+        {
+            closemusic();
+            playmusic("moein.wav",2000);
+        }
+        else if (choose.equals("4"))
+        {
+            closemusic();
+            playmusic("sattar.wav",2000);
+        }
+        else if (choose.equals("5"))
+        {
+            closemusic();
+            playmusic("shamaeezadeh.wav",2000);
+        }
+        else if (choose.equals("6"))
+        {
+            closemusic();
+            playmusic("andy.wav",2000);
+        }
+        else if (choose.equals("back"))
+        {
+            startMenu(nowUserName);
+        }
+        else
+        {
+            System.out.println(ConsoleColors.RED+"invalid!!!"+ConsoleColors.RESET);
+        }
+        startMenu(nowUserName);
+        return;
+    }
 
+    public static void playmusic(String filepath,int time)
+    {
+        try
+        {
+            clip=AudioSystem.getClip();
+            File file=new File(filepath);
+            clip= AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(file));
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.start();
+            Thread.sleep(time);
+        }
+        catch (Exception exc)
+        {
+            System.err.println(exc.getMessage());
+        }
+    }
+
+    public static void closemusic()
+    {
+        try
+        {
+            clip.stop();
+        }
+        catch (Exception exc)
+        {
+            System.err.println(exc.getMessage());
+        }
     }
 
     private void truckLoad(String[] input) {

@@ -302,7 +302,6 @@ public class Manager {
                 if (wilds.get(i).health != 0 && wilds.get(i).getX() == dogs.get(j).getX() && wilds.get(i).getY() == dogs.get(j).getY()) {
                     wilds.remove(i);
                     dogs.remove(j);
-                    System.out.println("DAfsdgfd");
                 }
             }
         }
