@@ -5,10 +5,13 @@ import com.google.gson.JsonParser;
 
 import java.io.*;
 import java.util.Scanner;
-import java.util.logging.Level;
+import java.util.logging.*;
 import java.util.regex.Pattern;
 
 public class Input {
+    Logger logger = Logger.getLogger(Logger.class.getName());
+    FileHandler fileHandler;
+    SimpleFormatter simpleFormatter;
     static Manager manager = new Manager();
     static Scanner scanner = new Scanner(System.in);
     String nowUserName = "";
@@ -19,26 +22,32 @@ public class Input {
     JsonParser parser = new JsonParser();
 
     private void buy(String input) {
+        log(nowUserName+" buy "+input);
         manager.buy(input);
     }
 
     private void pickup(String[] input) {
         int x = Integer.parseInt(input[1]);
         int y = Integer.parseInt(input[2]);
+        log(nowUserName+" pickup in x:"+x+" and y:"+y);
         if (x < 0 || y < 0 || x > 5 || y > 5) {
+            log(nowUserName+" pickup in invalid range!!");
             System.out.print(ConsoleColors.RED + "out of range!" + ConsoleColors.RESET);
         } else
             manager.pickup(x, y);
     }
 
     private void well() {
+        log(nowUserName+" order is working well");
         manager.well();
     }
 
     private void plant(String[] input) {
         int x = Integer.parseInt(input[1]);
         int y = Integer.parseInt(input[2]);
+        log(nowUserName+" plant grass x: "+x+" y: "+y);
         if (x < 0 || y < 0 || x > 5 || y > 5) {
+            log(nowUserName+" plant grass in out of range!! ");
             System.out.print(ConsoleColors.RED + "out of range!" + ConsoleColors.RESET);
         } else
             manager.plant(x, y);
@@ -47,8 +56,12 @@ public class Input {
     private void cage(String[] input) {
         int x = Integer.parseInt(input[1]);
         int y = Integer.parseInt(input[2]);
+        log(nowUserName+" order is establish cage in x:"+x+" y:"+y);
         if (x > 5 || x < 0 || y > 5 || y < 0)
+        {
+            log(nowUserName+" plant grass in out of range!! ");
             System.out.println(ConsoleColors.RED + "out of range!" + ConsoleColors.RESET);
+        }
         else
             manager.cage(x, y);
 
@@ -62,6 +75,7 @@ public class Input {
     private void turn(String[] input) {
         //todo ez
         int n = Integer.parseInt(input[1]);
+        log(nowUserName+" order is turn for "+n);
         if (n < 0)
             System.out.println(ConsoleColors.RED + "smart :/" + ConsoleColors.RESET);
         else
@@ -97,6 +111,7 @@ public class Input {
             } else if (Pattern.compile("[tT][rR][uU][cC][kK] [Gg][Oo]").matcher(order).find()) {
                 truckGo();
             } else if (Pattern.compile("[iI][nN][qQ][uU][iI][rR][Yy]").matcher(order).find()) {
+                log(nowUserName+" order is inquiry!!!");
                 manager.show();
             } else if (Pattern.compile("[nN][eE][wW] [fF][aA][cC][tT][oO][rR][yY] \\w+").matcher(order).find()) {
                 manager.newFactory(order.split("\\s")[2]);
@@ -105,9 +120,9 @@ public class Input {
             } else if (Pattern.compile("[tT][aA][sS][kK]").matcher(order).find()) {
                 task(level);
             } else {
+                logWarn(nowUserName+" enter wrong command!!!");
                 System.out.println(ConsoleColors.RED + "wrong command!" + ConsoleColors.RESET);
             }
-            Manager.logger.log(Level.INFO, "sssssss");
             finish = checkEnd(level);
         }
         System.out.println("congratulation!\tyou win level " + level + "");
@@ -115,6 +130,7 @@ public class Input {
     }
 
     private void task(int level) {
+        log(nowUserName+" want to see task to win the game!!!");
         switch (level){
             case 1:
                 System.out.println(ConsoleColors.WHITE+"6 egg"+ConsoleColors.RESET);
@@ -180,6 +196,7 @@ public class Input {
             else
                 score = 1;
             newLevel(manager);
+            log(nowUserName+" win the level  1 !!!!");
             fileChange(fileCopy(file), 2, nowUserName);
             return true;
         }
@@ -196,6 +213,7 @@ public class Input {
         System.out.println("egg = " + manager.store.allProductsCap.get("egg"));
         if (manager.store.allProductsCap.get("egg") >= 2 && hens >= 2) {
             newLevel(manager);
+            log(nowUserName+" win the level  2 !!!!");
             fileChange(fileCopy(file), 3, nowUserName);
             return true;
         }
@@ -205,6 +223,7 @@ public class Input {
     private boolean e3() {
         if (manager.store.allProductsCap.get("flour") == 2 && manager.getCoins() == 300) {
             fileChange(fileCopy(file), 4, nowUserName);
+            log(nowUserName+" win the level  3 !!!!");
             newLevel(manager);
             return true;
         }
@@ -220,6 +239,7 @@ public class Input {
         if (manager.store.allProductsCap.get("flour") == 6 && manager.getCoins() == 500 && hens == 5) {
             fileChange(fileCopy(file), 5, nowUserName);
             newLevel(manager);
+            log(nowUserName+" win the level  4 !!!!");
             return true;
         }
         return false;
@@ -228,6 +248,7 @@ public class Input {
     private boolean e5() {
         if (manager.store.allProductsCap.get("egg") == 9 && manager.store.allProductsCap.get("flour") == 5 && manager.store.allProductsCap.get("bread") == 1) {
             newLevel(manager);
+            log(nowUserName+" win the level  5 !!!!");
             return true;
         }
         return false;
@@ -282,6 +303,7 @@ public class Input {
     }
 
     private void truckUnload(String[] input) {
+        log(nowUserName+" unload the truck !!!!");
         String name = input[2];
         int am = 0;
         System.out.println("enter your amount");
@@ -291,6 +313,7 @@ public class Input {
 
     public void menu() {
         //todo(delete user)
+        log("the game run!!!");
         System.out.println("LOG IN(1)\tSIGNUP(2)");
         String state = scanner.nextLine();
 
@@ -321,6 +344,7 @@ public class Input {
                 if (username.substring(1, username.length() - 1).equals(name)) {
                     System.out.println(ConsoleColors.RED + "the username have already exist you can login!!!" + ConsoleColors.RESET);
                     bufferedReader.close();
+                    logWarn("player enter the existing username for sign up!!!");
                     menu();
                     return;
                 }
@@ -338,6 +362,7 @@ public class Input {
                 bufferedWriter.close();
                 System.out.println(ConsoleColors.CYAN + "sign up successfully done :)" + ConsoleColors.RESET);
                 System.out.println(ConsoleColors.PURPLE + "Enter the game with choose the login :)" + ConsoleColors.RESET);
+                log(name+" signed up successfully !!!");
                 menu();
             } catch (IOException exception) {
                 System.out.println(ConsoleColors.RED + "Error in opening account!!!" + ConsoleColors.RESET);
@@ -348,6 +373,7 @@ public class Input {
     }
 
     public void login() {
+        logger.setUseParentHandlers(false);
         boolean haveUser = false;
         String pass;
         System.out.print("enter username : ");
@@ -362,6 +388,7 @@ public class Input {
                 String username = jsonObject.get("username").toString();
                 if (username.substring(1, username.length() - 1).equals(name)) {
                     haveUser = true;
+                    log(name+" has logged in!!!");
                     System.out.println(ConsoleColors.RED + "Enter your password!!!" + ConsoleColors.RESET);
                     bufferedReader.close();
                     pass = scanner.nextLine();
@@ -369,15 +396,18 @@ public class Input {
                     if (passCertificate.substring(1, passCertificate.length() - 1).equals(pass)) {
                         System.out.println(ConsoleColors.GREEN + "Welcome :) !!!" + ConsoleColors.RESET);
                         nowUserName = name;
+                        log(nowUserName+" has logged in and enter password successfully!!!");
                         startMenu(username.substring(1, username.length() - 1));
                     } else {
                         System.out.println(ConsoleColors.RED + "your pass incorrect ReEnter your pass you can write (back) to go to menu:||" + ConsoleColors.RESET);
                         pass = scanner.nextLine();
+                        logWarn(nowUserName+" enter wrong password!!!");
                         while (!passCertificate.substring(1, passCertificate.length() - 1).equals(pass) && !pass.equals("back")) {
                             System.out.println(ConsoleColors.RED + "your pass word is wrong you can write (back) to go to menu :||" + ConsoleColors.RESET);
                             pass = scanner.nextLine();
                             if (pass.equals("back")) {
                                 menu();
+                                log(name+" back to menu!!!");
                                 return;
                             }
                         }
@@ -386,11 +416,17 @@ public class Input {
                     }
                 }
             }
-        } catch (IOException exception) {
-
+        }
+        catch (SecurityException exception)
+        {
+            exception.printStackTrace();
+        }
+        catch (IOException exception) {
+            exception.printStackTrace();
         }
         if (!haveUser) {
             System.out.println(ConsoleColors.RED + "there is no user with this username!!!!" + ConsoleColors.RESET);
+            logWarn(name+" try to login but there is not username with this name!!!");
             menu();
         }
     }
@@ -442,16 +478,20 @@ public class Input {
             level = scanner.nextLine();
             while (!isNumberic(level) && !level.equals("back")) {
                 System.out.println(ConsoleColors.RED + "your input must be number :|" + ConsoleColors.RESET);
+                logWarn(name+" enter invalid level!!!");
                 level = scanner.nextLine();
             }
             if (isNumberic(level)) {
                 if (Integer.parseInt(level) > 5 || Integer.parseInt(level) <= 0) {
                     System.out.println(ConsoleColors.RED + "your number must be between 1 and 5 !!!" + ConsoleColors.RESET);
+                    logWarn(name+" enter invalid level!!!");
                     startMenu(name);
                 } else if (Integer.parseInt(levels[Integer.parseInt(level) - 1]) == 1) {
+                    logWarn(name+" enter the geme in"+level+" level!!!");
                     run(Integer.parseInt(level));
                 } else {
                     System.out.println(ConsoleColors.RED + "Your inpute level is locked!!!" + ConsoleColors.RESET);
+                    logWarn(name+" enter locked level!!!");
                     startMenu(name);
                 }
             } else if (level.equals("back")) {
@@ -481,10 +521,12 @@ public class Input {
             truckLoad(input);
             return;
         }
+        log(nowUserName+" load the truck !!!!");
         manager.truckLoad(name, amount);
     }
 
     private void truckGo() {
+        log(nowUserName+" want to go the truck !!!!");
         manager.truckGo();
     }
 
@@ -551,6 +593,48 @@ public class Input {
                 System.out.println("eRRor");
             }
             i++;
+        }
+    }
+
+    private void log(String write)
+    {
+        try
+        {
+            simpleFormatter=new SimpleFormatter();
+            fileHandler=new FileHandler("C:/Users/ali/IdeaProjects/mainProject2/log/logger.log");
+            logger.addHandler(fileHandler);
+            fileHandler.setFormatter(simpleFormatter);
+            logger.log(Level.INFO,(write));
+            logger.setUseParentHandlers(false);
+        }
+        catch (SecurityException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void logWarn(String write)
+    {
+        try
+        {
+            simpleFormatter=new SimpleFormatter();
+            fileHandler=new FileHandler("C:/Users/ali/IdeaProjects/mainProject2/log/logger.log");
+            logger.addHandler(fileHandler);
+            fileHandler.setFormatter(simpleFormatter);
+            logger.log(Level.WARNING,(write));
+            logger.setUseParentHandlers(false);
+        }
+        catch (SecurityException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 
